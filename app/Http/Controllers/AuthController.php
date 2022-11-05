@@ -30,10 +30,7 @@ class AuthController extends Controller
    */
   public function login(Request $request)
   {
-    if ($valid = $this->superValidation($request, [
-      'email'    => 'required|string|email',
-      'password' => 'required|string',
-    ])) {
+    if ($valid = $this->superValidation($request, User::VALIDATION_RULES)) {
       return $valid;
     }
     $credentials = $request->only('email', 'password');
@@ -45,6 +42,7 @@ class AuthController extends Controller
     $user = Auth::user();
     return response()->json([
       'success'       => true,
+      'message'       => 'Successfully logged in',
       'user'          => $user,
       'authorisation' => [
         'token' => $token,
@@ -63,11 +61,10 @@ class AuthController extends Controller
    */
   public function register(Request $request)
   {
-    if ($valid = $this->superValidation($request, [
-      'name'     => 'required|string|max:255',
-      'email'    => 'required|string|email|max:255|unique:users',
-      'password' => 'required|string|min:6',
-    ])) {
+    $rules = User::VALIDATION_RULES;
+    $rules['name'] = 'required|string|max:255';
+    $rules['email'] .= '|unique:users';
+    if ($valid = $this->superValidation($request, $rules)) {
       return $valid;
     }
 
@@ -128,6 +125,7 @@ class AuthController extends Controller
   {
     return response()->json([
       'success'       => true,
+      'message'       => 'Token refreshed',
       'user'          => Auth::user(),
       'authorisation' => [
         'token' => Auth::refresh(),

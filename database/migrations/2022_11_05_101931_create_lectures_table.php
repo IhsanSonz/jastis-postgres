@@ -16,7 +16,7 @@ return new class extends Migration
     Schema::create('lectures', function (Blueprint $table) {
       $table->id();
       $table->string('name');
-      $table->string('desc');
+      $table->text('desc');
       $table->string('code');
       $table->string('color');
       $table->string('notification_key')->nullable();

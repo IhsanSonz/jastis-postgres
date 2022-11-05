@@ -13,10 +13,11 @@ return new class extends Migration
    */
   public function up()
   {
-    Schema::create('lectures_users', function (Blueprint $table) {
+    Schema::create('lecture_user', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('lecture_id');
       $table->unsignedBigInteger('user_id');
+      $table->integer('level')->default(3)->comment("1 = admin\n2 = lecturer\n3 = student");
       $table->timestamps();
     });
   }

@@ -14,7 +14,7 @@ return new class extends Migration
   public function up()
   {
     // Lecture many to many User
-    Schema::table('lectures_users', function (Blueprint $table) {
+    Schema::table('lecture_user', function (Blueprint $table) {
       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
       $table->foreign('lecture_id')->references('id')->on('lectures')->onDelete('cascade');
     });
@@ -28,7 +28,7 @@ return new class extends Migration
   public function down()
   {
     // Lecture many to many User
-    Schema::table('lectures', function (Blueprint $table) {
+    Schema::table('lecture_user', function (Blueprint $table) {
       $table->dropForeign('user_id');
       $table->dropForeign('lecture_id');
     });

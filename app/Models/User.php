@@ -47,6 +47,16 @@ class User extends Authenticatable implements JWTSubject
   ];
 
   /**
+   * Constant for validation rules.
+   *
+   * @var array
+   */
+  public const VALIDATION_RULES = [
+    'email'    => 'required|string|email|max:255',
+    'password' => 'required|string|min:8',
+  ];
+
+  /**
    * Get the identifier that will be stored in the subject claim of the JWT.
    *
    * @return mixed
@@ -64,5 +74,17 @@ class User extends Authenticatable implements JWTSubject
   public function getJWTCustomClaims()
   {
     return [];
+  }
+
+  /**
+   * Many to many relationship with Lecture model
+   *
+   * @return array
+   */
+  public function lectures()
+  {
+    return $this->belongsToMany(Lecture::class)
+      ->withPivot('level')
+      ->withTimestamps();
   }
 }

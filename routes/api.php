@@ -25,4 +25,14 @@ Route::group([
     Route::get('profile', 'AuthController@profile')->name('profile');
     Route::get('unauthorized', 'AuthController@unauthorized')->name('unauthorized');
   });
+
+  Route::name('lecture.')->prefix('lecture')->group(function () {
+    Route::get('/', 'LectureController@index')->name('all');
+    Route::get('{id}', 'LectureController@show')->name('show');
+    Route::get('{id}/lecturers', 'LectureController@getLecturers')->name('lecturers');
+    Route::get('{id}/students', 'LectureController@getStudents')->name('students');
+    Route::post('store', 'LectureController@store')->name('store');
+    Route::put('update/{id}', 'LectureController@update')->name('update');
+    Route::delete('delete/{id}', 'LectureController@destroy')->name('delete');
+  });
 });
