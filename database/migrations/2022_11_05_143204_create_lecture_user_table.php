@@ -17,7 +17,7 @@ return new class extends Migration
       $table->id();
       $table->unsignedBigInteger('lecture_id');
       $table->unsignedBigInteger('user_id');
-      $table->integer('level')->default(3)->comment("1 = admin\n2 = lecturer\n3 = student");
+      $table->integer('level')->default(3)->comment("1 = Lecturer\n2 = Assistant Lecturer\n3 = Student");
       $table->timestamps();
     });
   }

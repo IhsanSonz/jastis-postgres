@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lecture;
 use Faker\Factory as Faker;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LectureController extends Controller
 {
@@ -34,13 +35,14 @@ class LectureController extends Controller
   {
     if ($valid = $this->superValidation(
       $request,
-      Lecture::VALIDATION_RULES + ['user_id' => 'required|numeric']
+      Lecture::VALIDATION_RULES + ['user_id' => 'numeric']
     )) {
       return $valid;
     }
 
     $faker = Faker::create();
     $code = \Str::random(5);
+    $user_id = $request->user_id ?? Auth::user()->id;
 
     $lecture = new Lecture;
     $lecture->fill($request->all() + [
@@ -48,7 +50,7 @@ class LectureController extends Controller
       'color' => ltrim($faker->hexcolor, '#'),
     ]);
     $lecture->save();
-    $lecture->users()->attach($request->user_id, ['level' => 2]);
+    $lecture->users()->attach($user_id, ['level' => 1]);
 
     return response()->json([
       'success' => true,
@@ -82,7 +84,7 @@ class LectureController extends Controller
    */
   public function getLecturers($id)
   {
-    $lecturers = Lecture::find($id)->users()->wherePivot('level', '=', '2')->get();
+    $lecturers = Lecture::find($id)->users()->wherePivot('level', '=', '1')->get();
 
     return response()->json([
       'success' => true,

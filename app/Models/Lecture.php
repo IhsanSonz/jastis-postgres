@@ -33,6 +33,24 @@ class Lecture extends Model
   ];
 
   /**
+   * Constant for pivot level description.
+   *
+   * @var array
+   */
+  public const LEVEL_DESC = [
+    1 => 'Lecturer',
+    2 => 'Assistant Lecturer',
+    3 => 'Student',
+  ];
+
+  /**
+   * Constant for pivot default level.
+   *
+   * @var array
+   */
+  public const DEFAULT_LEVEL = 3;
+
+  /**
    * Many to many relationship with User model
    *
    * @return array

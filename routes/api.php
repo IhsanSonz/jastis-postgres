@@ -35,4 +35,12 @@ Route::group([
     Route::put('update/{id}', 'LectureController@update')->name('update');
     Route::delete('delete/{id}', 'LectureController@destroy')->name('delete');
   });
+
+  Route::name('user.')->prefix('user')->group(function () {
+    Route::get('lecture', 'UserController@getLectures')->name('lecture');
+    Route::post('join', 'UserController@joinLecture')->name('join');
+    Route::put('update-lecture-role/{id}', 'UserController@updateLevel')->name('update-lecture-role');
+    Route::delete('leave', 'UserController@leaveLecture')->name('leave');
+  });
+
 });

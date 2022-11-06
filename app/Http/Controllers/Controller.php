@@ -14,6 +14,16 @@ class Controller extends BaseController
 {
   use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+  /**
+   * Create a new AuthController instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('auth:api');
+  }
+
   public function superValidation(Request $request, $validation)
   {
     $validator = Validator::make($request->all(), $validation);

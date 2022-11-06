@@ -57,6 +57,13 @@ class User extends Authenticatable implements JWTSubject
   ];
 
   /**
+   * Constant for pivot default level.
+   *
+   * @var array
+   */
+  public const DEFAULT_LEVEL = Lecture::DEFAULT_LEVEL;
+
+  /**
    * Get the identifier that will be stored in the subject claim of the JWT.
    *
    * @return mixed
