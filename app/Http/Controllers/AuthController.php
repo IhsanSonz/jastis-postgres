@@ -126,9 +126,9 @@ class AuthController extends Controller
     return response()->json([
       'success' => true,
       'message' => 'Token refreshed',
+      'token'   => Auth::refresh(),
       'data'    => [
-        'user'  => Auth::user(),
-        'token' => Auth::refresh(),
+        'user' => Auth::user(),
       ],
     ]);
   }
