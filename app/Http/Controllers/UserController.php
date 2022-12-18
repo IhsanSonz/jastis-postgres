@@ -24,8 +24,14 @@ class UserController extends Controller
     )) {
       return $valid;
     }
-    $level = $request->level ?? 3;
-    $lectures = User::find(Auth::user()->id)->lectures()->wherePivot('level', '=', $level)->get();
+
+    $level = $request->level;
+    $lectures = User::find(Auth::user()->id)->lectures()
+      ->when($level, function ($query) use ($level) {
+        return $query->whereHas('users', function ($query) use ($level) {
+          return $query->where('level', '=', $level);
+        });
+      })->get();
 
     return response()->json([
       'success' => true,
@@ -46,7 +52,7 @@ class UserController extends Controller
       $request,
       [
         'code'  => 'required',
-        'level' => 'numeric',
+        'level' => 'nullable|numeric',
       ]
     )) {
       return $valid;
@@ -55,7 +61,7 @@ class UserController extends Controller
     $lecture = Lecture::where('code', '=', $request->code)->firstOrFail();
     $user = User::find(Auth::user()->id);
     if (!($level = $user->lectures()->where('lectures.id', $lecture->id)->first())) {
-      $user->lectures()->attach($lecture->id, ['level' => $request->level]);
+      $user->lectures()->attach($lecture->id, ['level' => $request->level ?? 3]);
     } else {
       return response()->json([
         'success' => false,
